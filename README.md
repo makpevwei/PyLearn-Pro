@@ -19,7 +19,7 @@
 ### How to Run 🛠️
 1. Clone the repository:
 ```python
-git clone https://github.com/your-username/pylearn-pro.git
+git clone https://github.com/your-username/pylearn-pro.git](https://github.com/makpevwei/PyLearn-Pro.git
 cd pylearn-pro
 ```
 2. Install dependencies:
