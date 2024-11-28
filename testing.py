@@ -26,36 +26,24 @@ def create_ppt(content, title="PyLearn Pro"):
         text_frame = text_box.text_frame
         text_frame.clear()  # Clear any default content
 
-        # Process paragraphs to apply formatting
+        # Format paragraphs with font size, color, and alignment
         for paragraph in slide_content.split("\n"):
-            if not paragraph.strip():
-                continue  # Skip empty lines
-
             p = text_frame.add_paragraph()
+            p.text = paragraph.strip()
             p.font.size = Pt(18)  # Set font size to 18pt
             p.alignment = PP_ALIGN.LEFT
 
-            # Split by single or double asterisks for bold formatting
-            run_content = re.split(r"(\*.*?\*|\*\*.*?\*\*)", paragraph)
-            for part in run_content:
-                if not part.strip():
-                    continue
+            # Set font color: Red for code, Black for normal text
+            if paragraph.startswith("    "):  # Code lines are indented
+                p.font.color.rgb = RGBColor(255, 0, 0)  # Red for code
+            else:
+                p.font.color.rgb = RGBColor(0, 0, 0)  # Black for normal text
 
-                run = p.add_run()
-                if part.startswith("**") and part.endswith("**"):
-                    run.text = part[2:-2]  # Remove ** and apply bold
-                    run.font.bold = True
-                elif part.startswith("*") and part.endswith("*"):
-                    run.text = part[1:-1]  # Remove * and apply bold
-                    run.font.bold = True
-                else:
-                    run.text = part  # Normal text
-                
-                # Apply red font color for indented (code-like) lines
-                if paragraph.startswith("    "):  # Indented lines
-                    run.font.color.rgb = RGBColor(255, 0, 0)  # Red for code
-                else:
-                    run.font.color.rgb = RGBColor(0, 0, 0)  # Black for normal text
+            # Apply bold formatting to titles
+            if slide_title.lower() == 'details':
+                p.font.bold = False  # Ensure it's not bold for normal content
+            else:
+                p.font.bold = True  # Set titles in bold
 
     # Remove code block delimiters and process content
     cleaned_content = []
@@ -109,17 +97,6 @@ def display_content_with_code_highlight(content):
             st.write(line)
 
 
-# Function to clean content and remove bullet points, underlines, and empty lines
-def clean_content(content):
-    """Clean content by removing bullet points, underlines, and extra formatting."""
-    # Remove bullet points and underlines
-    content = re.sub(r"^[-•]\s*", "", content)  # Removes bullet points
-    content = re.sub(r"(\w+[_-]\w+)", r"\1", content)  # Remove underscores and hyphens for cleaner text
-    content = re.sub(r"\n{2,}", "\n", content)  # Remove excessive newlines
-    content = re.sub(r"[_-]+", "", content)  # Remove underscores and dashes (for underlines)
-    return content
-
-
 # App Title
 st.title("Learn Python with AI - PyLearn Pro")
 
@@ -161,7 +138,6 @@ topics = {
     ]
 }
 
-# Always visible sidebar for topics and subtopics
 selected_topic = st.sidebar.selectbox("Select a Topic", list(topics.keys()))
 subtopics = topics[selected_topic]
 selected_subtopic = st.sidebar.radio(f"{selected_topic} Subtopics", subtopics)
@@ -181,14 +157,11 @@ if st.button(f"Explain {selected_subtopic}"):
             explanation_text += part['response']
             explanation_placeholder.text(explanation_text)
 
-        # Clean content to remove bullet points and underlines
-        cleaned_text = clean_content(explanation_text)
-
         # Display content with code block highlighting
-        display_content_with_code_highlight(cleaned_text)
+        display_content_with_code_highlight(explanation_text)
 
         # Save explanation in session state for download options
-        st.session_state.explanation = cleaned_text
+        st.session_state.explanation = explanation_text
 
     if st.session_state.explanation:
         st.download_button(
@@ -214,14 +187,11 @@ if st.button("Get Answer"):
                 answer_text += part['response']
                 answer_placeholder.text(answer_text)
 
-            # Clean content to remove bullet points and underlines
-            cleaned_answer = clean_content(answer_text)
-
             # Display content with code block highlighting
-            display_content_with_code_highlight(cleaned_answer)
+            display_content_with_code_highlight(answer_text)
 
             # Save answer in session state for download options
-            st.session_state.answer = cleaned_answer
+            st.session_state.answer = answer_text
 
         if st.session_state.answer:
             st.download_button(
