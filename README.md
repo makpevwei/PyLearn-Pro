@@ -1,6 +1,6 @@
 # PyLearn Pro: Learn Python with AI 🚀
 
-**PyLearn Pro** is an simple interactive learning app powered by Streamlit and AI, designed to help you master Python. Whether you're a beginner or looking to brush up on advanced topics, PyLearn Pro provides engaging explanations, real-time Q&A, and a progress tracker—all in one place!
+**PyLearn Pro** is an simple interactive learning app powered by Streamlit and AI, designed to help you master Python. Whether you're a beginner or looking to brush up on advanced topics, PyLearn Pro provides engaging explanations and real-time Q&A.
 
 ### Features ✨
 
@@ -13,9 +13,6 @@
 
     - Q&A Mentor:
         - Ask Python-related questions and receive instant AI-powered responses.
-
-    - Progress Tracker:
-        - Monitor your progress across topics with a simple, intuitive interface.
 
     - User-Friendly Interface:
         Built with Streamlit, offering a smooth, interactive experience.
