@@ -200,7 +200,10 @@ if st.button(f"Explain {selected_subtopic}"):
 
 # AI-Powered Mentor Section
 st.subheader("Ask Python Questions")
-user_query = st.text_input("Type your Python-related question here:")
+user_query = st.text_area(
+    "Type your Python-related question here:",
+    height=200  # Make the text area larger
+)
 
 if st.button("Get Answer"):
     if user_query:
